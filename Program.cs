@@ -3,6 +3,6 @@ using DiningPhilosophers;
 
 Console.WriteLine("Hello, World!");
 var djiskra = new Djiskra(5);
-//djiskra.Run();
+djiskra.Run();
 Console.WriteLine("Yo");
 

@@ -53,29 +53,32 @@ namespace DiningPhilosophers
                 Console.WriteLine($"Philosopher {philospher} is thinking for next {dur / 1000} s");
             }
             Thread.Sleep(dur);
-            PhilosphersStates[philospher] = PhilosopherState.Hungry;
         }
 
         private void TakeForks(int philospher)
         {
             lock (_lock)
             {
-                Console.WriteLine($"Philosopher {philospher} is getting forks");
+                PhilosphersStates[philospher] = PhilosopherState.Hungry;
+                lock (Console.Out)
+                {
+                    Console.WriteLine($"Philosopher {philospher} is getting forks");
+                }
+                TestForks(philospher);
             }
-            bool hasLeft = false;
-            bool hasRight = false;
-            while (!hasLeft || !hasRight)
-            {
-                hasLeft = GetLeft(philospher) != 2;
-                hasRight = GetRight(philospher) != 2;
-            }
+            BothForksAvailable[philospher].Wait();
 
-            PhilosphersStates[PhilosophersCount] = PhilosopherState.Eating;
         }
 
         private void PutDownForks(int philospher)
         {
+            lock (_lock)
+            {
+                PhilosphersStates[philospher] = PhilosopherState.Thinking;
 
+                TestForks(GetLeft(philospher));
+                TestForks(GetRight(philospher));
+            }
         }
 
         private void Eat(int philospher)
@@ -83,10 +86,10 @@ namespace DiningPhilosophers
             var dur = Random.Next(5000, 8000);
             lock (Console.Out)
             {
-                Console.WriteLine($"Philosopher {philospher} is eating for next {dur / 1000} s");
+                Console.WriteLine($"_ Philosopher {philospher} is eating for next {dur / 1000} s");
             }
             Thread.Sleep(dur);
-            PhilosphersStates[PhilosophersCount] = PhilosopherState.Thinking;
+
         }
 
         private void Philospher(int philospher)
@@ -102,10 +105,13 @@ namespace DiningPhilosophers
 
         public void Run()
         {
+            Task[] tasks = new Task[PhilosophersCount];
             for (int i = 0; i < PhilosophersCount; i++)
             {
-                Philospher(i);
+                var philosopherId = i;
+                tasks[i] = Task.Run(() => Philospher(philosopherId));
             }
+            Task.WaitAll(tasks);
         }
     }
 }
