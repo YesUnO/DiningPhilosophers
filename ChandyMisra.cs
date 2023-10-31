@@ -3,23 +3,21 @@ namespace DiningPhilosophers
 {
     internal class ChandyMisra
     {
-        private readonly object _lock = new object();
-        private enum ForkState
+        internal enum ForkState
         {
             Clean,
             Dirty
         }
         internal ChandyMisra(int count)
         {
+            Utills.SetCount(count);
             Forks = new Fork[count];
             Philosophers = new Philosopher[count];
-            Count = count;
             for (int i = 0; i < count; i++)
             {
                 var fork = new Fork(i);
                 var philosopher = new Philosopher(i);
 
-                fork.State = ForkState.Dirty;
                 fork.Owner = philosopher;
 
                 philosopher.LeftFork = fork;
@@ -27,33 +25,66 @@ namespace DiningPhilosophers
                 Philosophers[i] = philosopher;
                 Forks[i] = fork;
             }
-        }
-        int Count;
-        Fork[] Forks;
-        Philosopher[] Philosophers;
 
-        private class Fork
+            foreach (var philosopher in Philosophers)
+            {
+                philosopher.LeftPhilosopher = Philosophers[Utills.GetLeft(philosopher.Id)];
+                philosopher.RightPhilosopher = Philosophers[Utills.GetRight(philosopher.Id)];
+
+                philosopher.RightFork = Forks[Utills.GetRight(philosopher.Id)];
+            }
+        }
+        Fork[] Forks;
+        private Philosopher[] Philosophers { get; }
+
+        internal class Fork
         {
             internal Fork(int id)
             {
                 Id = id;
             }
             int Id { get; set; }
-            internal ForkState? State { get; set; }
-            internal Philosopher? Owner { get; set; }
+            internal bool IsClean { get; set; } = false;
+            internal Philosopher Owner { get; set; }
+
+            internal void Request(Philosopher requestor)
+            {
+               
+            }
         }
 
-        private class Philosopher
+        internal class Philosopher
         {
             public Philosopher(int id)
             {
                 Id = id;
             }
-            int Id { set; get; }
-            internal Fork? LeftFork { get; set; }
-            internal Fork? RightFork { get; set; }
+            internal int Id { set; get; }
+            internal Fork LeftFork { get; set; } 
+            internal Fork RightFork { get; set; }
+            internal Philosopher LeftPhilosopher { get; set; }
+            internal Philosopher RightPhilosopher { get; set; }
 
-            
+            internal void GetForks()
+            {
+                LeftPhilosopher.GiveRightFork();
+                RightPhilosopher.GiveLeftFork();
+            }
+
+            internal void GiveLeftFork() 
+            {
+
+            }
+
+            internal void GiveRightFork()
+            {
+
+            }
+
+            internal void PutForksDown()
+            {
+
+            }
         }
     }
 }
