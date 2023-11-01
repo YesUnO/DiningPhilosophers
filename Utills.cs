@@ -5,40 +5,68 @@ namespace DiningPhilosophers
     internal static class Utills
     {
         private static Random Random = new();
-        internal static int Count { get; private set; }
-
+        internal static int Count { get; private set; } = 5;
+        internal static bool SingleImplRun { get; private set; } = false;
+        static int _low = 5000;
+        static int _high = 8000;
 
         internal static void Think(int philospher)
         {
-            var dur = Random.Next(5000, 8000);
-            lock (Console.Out)
+            var dur = Random.Next(_low, _high);
+            if (SingleImplRun)
             {
-                Console.WriteLine($"Philosopher {philospher} is thinking for next {dur / 1000} s");
+                lock (Console.Out)
+                {
+                    Console.WriteLine($"Philosopher {philospher} is thinking for next {dur / 1000} s");
+                }
             }
+            
             Thread.Sleep(dur);
         }
 
         internal static void Eat(int philospher)
         {
-            var dur = Random.Next(5000, 8000);
-            lock (Console.Out)
+            var dur = Random.Next(_low, _high);
+            if (SingleImplRun)
             {
-                Console.WriteLine($"_ Philosopher {philospher} is eating for next {dur / 1000} s");
+                lock (Console.Out)
+                {
+                    Console.WriteLine($"__ Philosopher {philospher} is eating for next {dur / 1000} s");
+                }
             }
             Thread.Sleep(dur);
         }
 
-        internal static void GetForks(int philospher)
+        internal static void LogGetForks(int philospher)
         {
-            lock (Console.Out)
+            if (SingleImplRun)
             {
-                Console.WriteLine($"Philosopher {philospher} is getting forks");
+                lock (Console.Out)
+                {
+                    Console.WriteLine($" + Philosopher {philospher} is getting forks");
+                }
+            }
+        }
+
+        internal static void LogPutForks(int philospher)
+        {
+            if (SingleImplRun)
+            {
+                lock (Console.Out)
+                {
+                    Console.WriteLine($" - Philosopher {philospher} gave up forks");
+                }
             }
         }
 
         internal static void SetCount(int count)
         {
             Count = count;
+        }
+
+        internal static void SetImplRun(bool isSingle)
+        {
+            SingleImplRun = isSingle;
         }
 
         internal static int GetLeft(int id)
