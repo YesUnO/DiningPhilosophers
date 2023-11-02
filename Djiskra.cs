@@ -8,11 +8,12 @@ namespace DiningPhilosophers
         private PhilosopherState[] PhilosphersStates;
         private SemaphoreSlim[] BothForksAvailable;
         private readonly object _lock = new object();
-        public int[] EatCount { get; private set; } = null;
+        public int[] EatCount { get; set; } = null;
         internal Djiskra(int philosophersCount)
         {
+            EatCount = new int[philosophersCount];
             Utills.SetCount(philosophersCount);
-            Utills.SetImplRun(true);
+            Utills.SetIsSingleRun(true);
             PhilosphersStates = new PhilosopherState[philosophersCount];
             BothForksAvailable = Enumerable.Range(0, philosophersCount)
                 .Select(_ => new SemaphoreSlim(0))
@@ -62,25 +63,28 @@ namespace DiningPhilosophers
             }
         }
 
-        private void RunPhilospher(int philospher, CancellationToken cancellationToken)
+        private void RunPhilospher(int philospher, CancellationToken ct)
         {
-            while (!cancellationToken.IsCancellationRequested)
+            while (!ct.IsCancellationRequested)
             {
-                Utills.Think(philospher);
+                Utills.Think(philospher, ct);
                 TakeForks(philospher);
-                Utills.Eat(philospher);
+                Utills.Eat(philospher, ct);
                 PutDownForks(philospher);
-                Interlocked.Increment(ref EatCount[philospher]);
+                lock (EatCount)
+                {
+                    EatCount[philospher]++;
+                }
             }
         }
 
-        public async Task RunTaskWithOptionalCancelationToken(CancellationToken cancellationToken = default)
+        public async Task RunTaskWithOptionalCancelationToken(CancellationToken ct = default)
         {
             Task[] tasks = new Task[Utills.Count];
             for (int i = 0; i < Utills.Count; i++)
             {
                 var philosopherId = i;
-                tasks[i] = Task.Run(() => RunPhilospher(philosopherId, cancellationToken));
+                tasks[i] = Task.Run(() => RunPhilospher(philosopherId, ct));
             }
             await Task.WhenAll(tasks);
         }

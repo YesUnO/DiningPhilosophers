@@ -4,12 +4,13 @@
     {
         Fork[] Forks;
         internal Philosopher[] Philosophers { get; }
-        internal int[] EatCount { get; } = null;
+        internal int[] EatCount { get; set; } = null;
         internal ChandyMisra(int count)
         {
             Utills.SetCount(count);
-            Utills.SetImplRun(true);
+            Utills.SetIsSingleRun(true);
             Forks = new Fork[count];
+            EatCount = new int[count];
             Philosophers = new Philosopher[count];
             for (int i = 0; i < count; i++)
             {
@@ -60,13 +61,13 @@
             }
         }
 
-        internal async Task RunTaskWithOptionalCancelationToken(CancellationToken cancellationToken = default)
+        internal async Task RunTaskWithOptionalCancelationToken(CancellationToken ct = default)
         {
             Task[] tasks = new Task[Utills.Count];
             for (int i = 0; i < Utills.Count; i++)
             {
                 var philosopherId = i;
-                tasks[i] = Task.Run(() => Philosophers[philosopherId].Run(cancellationToken));
+                tasks[i] = Task.Run(() => Philosophers[philosopherId].Run(ct));
             }
             await Task.WhenAll(tasks);
         }

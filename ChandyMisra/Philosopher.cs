@@ -77,16 +77,19 @@ namespace DiningPhilosophers.ChandyMisra
             Monitor.PulseAll(fork);
         }
 
-        internal void Run(CancellationToken cancellationToken)
+        internal void Run(CancellationToken ct)
         {
-            while (!cancellationToken.IsCancellationRequested)
+            while (!ct.IsCancellationRequested)
             {
-                Utills.Think(Id);
+                Utills.Think(Id, ct);
                 GetForks();
-                Utills.Eat(Id);
+                Utills.Eat(Id, ct);
                 RightFork.IsClean = LeftFork.IsClean = false;
                 PutForks();
-                Interlocked.Increment(ref RunInstance.EatCount[Id]);
+                lock (RunInstance.EatCount)
+                {
+                    RunInstance.EatCount[Id]++;
+                }
             }
         }
     }

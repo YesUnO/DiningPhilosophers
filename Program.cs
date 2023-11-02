@@ -1,5 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
-using DiningPhilosophers;
+﻿using DiningPhilosophers;
 using DiningPhilosophers.ChandyMisra;
 
 
@@ -12,7 +11,7 @@ void RunDjiskra()
 {
     Console.WriteLine("Starting Djiskra");
     var djiskra = new Djiskra(5);
-    var task =  djiskra.RunTaskWithOptionalCancelationToken();
+    var task = djiskra.RunTaskWithOptionalCancelationToken();
     task.Wait();
 }
 
@@ -31,15 +30,15 @@ void RunAll()
     int runTimeInSeconds = 5;
 
     CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-    CancellationToken cancellationToken = cancellationTokenSource.Token;
+    CancellationToken ct = cancellationTokenSource.Token;
 
 
     var djiskra = new Djiskra();
     var chandyMisra = new ChandyMisra();
 
-    var chandyMisraTask = chandyMisra.RunTaskWithOptionalCancelationToken(cancellationToken);
-    var djiskraTask = djiskra.RunTaskWithOptionalCancelationToken(cancellationToken);
-    var elapsedTask = DisplayElapsed(cancellationToken);
+    var chandyMisraTask = chandyMisra.RunTaskWithOptionalCancelationToken(ct);
+    var djiskraTask = djiskra.RunTaskWithOptionalCancelationToken(ct);
+    var elapsedTask = DisplayElapsed(ct);
 
     Task.Delay(runTimeInSeconds * 1000).ContinueWith(_ =>
     {
@@ -50,20 +49,27 @@ void RunAll()
 
     Task.WaitAll(tasks);
 
+    var djiskraCount = 0;
+    var chandyMisraCount = 0;
+
     for (int i = 0; i < chandyMisra.EatCount.Length; i++)
     {
+        djiskraCount += djiskra.EatCount[i];
+        chandyMisraCount += chandyMisra.EatCount[i];
+
         Console.WriteLine($"{i} __ Djiskra: {djiskra.EatCount[i]}; ChandyMisra: {chandyMisra.EatCount[i]} ");
     }
+    Console.WriteLine($"total: Djiskra: {djiskraCount}; ChandyMisra: {chandyMisraCount} ");
+
 }
 
-static async Task DisplayElapsed(CancellationToken cancellationToken)
+static async Task DisplayElapsed(CancellationToken ct)
 {
     int seconds = 0;
-    while (!cancellationToken.IsCancellationRequested)
+    while (!ct.IsCancellationRequested)
     {
-        Console.WriteLine($"{seconds} seconds");
+        Console.WriteLine($"{seconds++} seconds");
         await Task.Delay(1000);
-        seconds++;
     }
-    
+
 }

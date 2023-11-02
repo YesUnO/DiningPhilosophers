@@ -6,42 +6,44 @@ namespace DiningPhilosophers
     {
         private static Random Random = new();
         internal static int Count { get; private set; } = 5;
-        internal static bool SingleImplRun { get; private set; } = false;
-        static int _low = 5000;
-        static int _high = 8000;
+        internal static bool IsSingleRun { get; private set; } = false;
+        private static readonly object _lock = new object();
+        static int _low = 10;
+        static int _high = 15;
 
-        internal static void Think(int philospher)
+        internal static void Think(int philospher, CancellationToken ct = default)
         {
-            var dur = Random.Next(_low, _high);
-            if (SingleImplRun)
+            int dur = 0;
+            lock (_lock)
             {
-                lock (Console.Out)
+                dur = Random.Next(_low, _high);
+                if (IsSingleRun)
                 {
                     Console.WriteLine($"Philosopher {philospher} is thinking for next {dur / 1000} s");
                 }
             }
-            
-            Thread.Sleep(dur);
+            ct.WaitHandle.WaitOne(TimeSpan.FromMilliseconds(dur));
         }
 
-        internal static void Eat(int philospher)
+        internal static void Eat(int philospher, CancellationToken ct = default)
         {
-            var dur = Random.Next(_low, _high);
-            if (SingleImplRun)
+            int dur = 0;
+            lock (_lock)
             {
-                lock (Console.Out)
+                dur = Random.Next(_low, _high);
+                if (IsSingleRun)
                 {
                     Console.WriteLine($"__ Philosopher {philospher} is eating for next {dur / 1000} s");
                 }
             }
-            Thread.Sleep(dur);
+            ct.WaitHandle.WaitOne(TimeSpan.FromMilliseconds(dur));
         }
 
         internal static void LogGetForks(int philospher)
         {
-            if (SingleImplRun)
+            if (IsSingleRun)
             {
-                lock (Console.Out)
+                lock (_lock)
                 {
                     Console.WriteLine($" + Philosopher {philospher} is getting forks");
                 }
@@ -50,9 +52,9 @@ namespace DiningPhilosophers
 
         internal static void LogPutForks(int philospher)
         {
-            if (SingleImplRun)
+            if (IsSingleRun)
             {
-                lock (Console.Out)
+                lock (_lock)
                 {
                     Console.WriteLine($" - Philosopher {philospher} gave up forks");
                 }
@@ -64,9 +66,11 @@ namespace DiningPhilosophers
             Count = count;
         }
 
-        internal static void SetImplRun(bool isSingle)
+        internal static void SetIsSingleRun(bool isSingle)
         {
-            SingleImplRun = isSingle;
+            IsSingleRun = isSingle;
+            _high = 8000;
+            _low = 5000;
         }
 
         internal static int GetLeft(int id)
