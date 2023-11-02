@@ -1,6 +1,4 @@
 ﻿
-using DiningPhilosophers.ChandyMisra;
-
 namespace DiningPhilosophers
 {
     internal class Djiskra
