@@ -45,7 +45,6 @@ namespace DiningPhilosophers
                 TestForks(philospher);
             }
             BothForksAvailable[philospher].Wait();
-
         }
 
         private void PutDownForks(int philospher)
