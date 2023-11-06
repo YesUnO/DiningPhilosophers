@@ -1,21 +1,29 @@
 ﻿
+using DiningPhilosophers.Djiskrax;
+
 namespace DiningPhilosophers
 {
     internal class DjiskraPhilosopher : Philosopher
     {
+        private Instance _instance;
+        public DjiskraPhilosopher(Instance instance) : base(instance) 
+        {
+            _instance = instance;
+        }
+        
         internal override void Eat()
         {
-            throw new NotImplementedException();
         }
 
         internal override void GetForks()
         {
-            throw new NotImplementedException();
+            _instance.TakeForks(Id);
         }
 
         internal override void PutForks()
         {
-            throw new NotImplementedException();
+            _instance.PutDownForks(Id);
         }
+
     }
 }

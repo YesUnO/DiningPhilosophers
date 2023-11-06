@@ -4,9 +4,13 @@ namespace DiningPhilosophers
 {
     internal abstract class Philosopher: IPhilosopher
     {
-        int Id { get; set; }
-        PhilosopherState PhilosopherState;
-        RunnerInstance RunnerInstance;
+        public Philosopher(RunnerInstance runnerInstance)
+        {
+            RunnerInstance = runnerInstance;
+        }
+        public int Id { get; set; }
+        public PhilosopherState State { get; set; }
+        protected RunnerInstance RunnerInstance;
         internal abstract void GetForks();
         void GetForksWrapper()
         {
@@ -35,6 +39,5 @@ namespace DiningPhilosophers
                 PutForksWrapper();
             }
         }
-
     }
 }
