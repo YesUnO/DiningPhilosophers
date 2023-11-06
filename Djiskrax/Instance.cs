@@ -1,12 +1,16 @@
-﻿namespace DiningPhilosophers.Djiskrax
+﻿using DiningPhilosophers.Philosophers;
+using DiningPhilosophers.SolutionInstance;
+
+namespace DiningPhilosophers.Djiskrax
 {
     internal class Instance : RunnerInstance
     {
         internal SemaphoreSlim[] BothForksAvailable;
         private readonly object _lock = new object();
 
-        public Instance()
+        public override void Initialize(IPhilosopher[] philosophers)
         {
+            base.Initialize(philosophers);
             BothForksAvailable = Enumerable.Range(0, Count)
                 .Select(_ => new SemaphoreSlim(0))
                 .ToArray();

@@ -1,9 +1,10 @@
-﻿
+﻿using DiningPhilosophers.Philosophers;
+
 namespace DiningPhilosophers.ChandyMisra
 {
-    internal class Philosopher
+    internal class PhilosopherCh
     {
-        public Philosopher(int id, ChandyMisra runInstance)
+        public PhilosopherCh(int id, ChandyMisra runInstance)
         {
             Id = id;
             State = PhilosopherState.Thinking;
@@ -13,8 +14,8 @@ namespace DiningPhilosophers.ChandyMisra
         internal PhilosopherState State { get; set; }
         internal Fork LeftFork { get; set; }
         internal Fork RightFork { get; set; }
-        internal Philosopher LeftPhilosopher { get; set; }
-        internal Philosopher RightPhilosopher { get; set; }
+        internal PhilosopherCh LeftPhilosopher { get; set; }
+        internal PhilosopherCh RightPhilosopher { get; set; }
         private ChandyMisra RunInstance;
 
         private void GetForks()
@@ -50,7 +51,7 @@ namespace DiningPhilosophers.ChandyMisra
             TryGiveUpFork(RightFork, RightPhilosopher);
         }
 
-        private void TryGiveUpFork(Fork fork, Philosopher reciever)
+        private void TryGiveUpFork(Fork fork, PhilosopherCh reciever)
         {
             lock (fork)
             {
@@ -70,7 +71,7 @@ namespace DiningPhilosophers.ChandyMisra
             State = PhilosopherState.Thinking;
         }
 
-        private void SendFork(Fork fork, Philosopher reciever)
+        private void SendFork(Fork fork, PhilosopherCh reciever)
         {
             fork.Owner = reciever;
             fork.IsClean = true;

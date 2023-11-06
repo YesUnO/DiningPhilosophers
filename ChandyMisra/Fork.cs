@@ -1,4 +1,5 @@
-﻿
+﻿using DiningPhilosophers.Philosophers;
+
 namespace DiningPhilosophers.ChandyMisra
 {
     internal class Fork
@@ -9,7 +10,7 @@ namespace DiningPhilosophers.ChandyMisra
         }
         int Id { get; set; }
         internal bool IsClean { get; set; } = false;
-        internal Philosopher Owner { get; set; }
+        internal PhilosopherCh Owner { get; set; }
 
     }
 }

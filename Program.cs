@@ -1,18 +1,15 @@
 ﻿using DiningPhilosophers;
 using DiningPhilosophers.ChandyMisra;
 
-
-RunAll();
-
-
+RunDjiskra();
 
 
 void RunDjiskra()
 {
     Console.WriteLine("Starting Djiskra");
-    var djiskra = new Djiskra(5);
-    var task = djiskra.RunTaskWithOptionalCancelationToken();
-    task.Wait();
+    var solutionFactory = new SolutionFactory();
+    var djiskra = solutionFactory.CreateDjiskraSolution(true, 5);
+    djiskra.Run().Wait();
 }
 
 void RunChandyMisra()

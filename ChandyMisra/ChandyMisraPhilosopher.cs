@@ -1,9 +1,11 @@
-﻿
-namespace DiningPhilosophers
+﻿using DiningPhilosophers.Philosophers;
+using DiningPhilosophers.SolutionInstance;
+
+namespace DiningPhilosophers.ChandyMisra
 {
     internal class ChandyMisraPhilosopher : Philosopher
     {
-        public ChandyMisraPhilosopher(RunnerInstance runnerInstance):base(runnerInstance)
+        public ChandyMisraPhilosopher(int id, RunnerInstance runnerInstance) : base(id, runnerInstance)
         {
 
         }

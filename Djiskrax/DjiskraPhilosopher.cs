@@ -1,16 +1,15 @@
-﻿
-using DiningPhilosophers.Djiskrax;
+﻿using DiningPhilosophers.Philosophers;
 
-namespace DiningPhilosophers
+namespace DiningPhilosophers.Djiskrax
 {
     internal class DjiskraPhilosopher : Philosopher
     {
         private Instance _instance;
-        public DjiskraPhilosopher(Instance instance) : base(instance) 
+        public DjiskraPhilosopher(int id, Instance instance) : base(id, instance)
         {
             _instance = instance;
         }
-        
+
         internal override void Eat()
         {
         }

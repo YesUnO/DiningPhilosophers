@@ -1,10 +1,11 @@
-﻿
-namespace DiningPhilosophers
+﻿using DiningPhilosophers.Philosophers;
+
+namespace DiningPhilosophers.SolutionInstance
 {
-    public class RunnerInstance: IRunnerInstance
+    public class RunnerInstance : IRunnerInstance
     {
-        public IPhilosopher[] Philosophers { get; set; }
-        int[] EatCounter { get; set; }
+        public IPhilosopher[] Philosophers { get; set; } = new IPhilosopher[0];
+        int[] EatCounter { get; set; } = new int[0];
         private Random Random = new();
         public int Count { get { return Philosophers.Length; } }
         internal bool IsSingleRun { get; private set; } = false;
@@ -12,6 +13,12 @@ namespace DiningPhilosophers
         //private readonly object _counterLock = new(); maybe?
         private int _low = 10;
         private int _high = 15;
+
+        public virtual void Initialize(IPhilosopher[] philosophers)
+        {
+            Philosophers = philosophers;
+            EatCounter = new int[Count];
+        }
 
         internal void Think(int philospher, CancellationToken ct = default)
         {
@@ -93,7 +100,7 @@ namespace DiningPhilosophers
             for (int i = 0; i < Count; i++)
             {
                 var philosopherId = i;
-                tasks[i] = Task.Run(() => Philosophers[i].Run(ct));
+                tasks[i] = Task.Run(() => Philosophers[philosopherId].Run(ct));
             }
             await Task.WhenAll(tasks);
         }

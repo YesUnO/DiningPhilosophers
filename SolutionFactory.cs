@@ -1,18 +1,35 @@
 ﻿
+using DiningPhilosophers.ChandyMisra;
+using DiningPhilosophers.Djiskrax;
+using DiningPhilosophers.SolutionInstance;
+
 namespace DiningPhilosophers
 {
-    internal abstract class SolutionFactory
+    class SolutionFactory
     {
-        internal abstract IPhilosopher CreatePhilosopher();
-        internal abstract IRunnerInstance CreateRunnerInstance();
-        IRunnerInstance CreateSolution(bool isSingle, int count)
+        internal IRunnerInstance CreateDjiskraSolution(bool isSingle, int count)
         {
-            var runnerInstance = CreateRunnerInstance();
+            var runnerInstance = new Instance();
             runnerInstance.SetIsSingleRun(isSingle);
-            var philosophers = runnerInstance.Philosophers = new Philosopher[count];
+            var philosophers = new DjiskraPhilosopher[count];
+            runnerInstance.Initialize(philosophers);
             for (int i = 0; i < count; i++)
             {
-                var philosopher = CreatePhilosopher();
+                var philosopher = new DjiskraPhilosopher(i, runnerInstance);
+                philosophers[i] = philosopher;
+            }
+            return runnerInstance;
+        }
+
+        internal IRunnerInstance CreateChandyMisraSolution(bool isSingle, int count)
+        {
+            var runnerInstance = new RunnerInstance();
+            runnerInstance.SetIsSingleRun(isSingle);
+            var philosophers = runnerInstance.Philosophers = new ChandyMisraPhilosopher[count];
+            runnerInstance.Initialize(philosophers);
+            for (int i = 0; i < count; i++)
+            {
+                var philosopher = new ChandyMisraPhilosopher(i, runnerInstance);
                 philosophers[i] = philosopher;
             }
             return runnerInstance;
@@ -37,8 +54,8 @@ namespace DiningPhilosophers
                 cancellationTokenSource.Cancel();
             });
 
-            var djiskra = CreateSolution(false, count);
-            var chandyMisra = CreateSolution(false, count);
+            var djiskra = CreateDjiskraSolution(false, count);
+            var chandyMisra = CreateChandyMisraSolution(false, count);
             var tasks = new Task[] { DisplayElapsed(ct), djiskra.Run(ct), chandyMisra.Run(ct)};
             await Task.WhenAll(tasks);
         }

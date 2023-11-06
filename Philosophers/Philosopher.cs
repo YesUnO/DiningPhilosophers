@@ -1,11 +1,12 @@
-﻿
+﻿using DiningPhilosophers.SolutionInstance;
 
-namespace DiningPhilosophers
+namespace DiningPhilosophers.Philosophers
 {
-    internal abstract class Philosopher: IPhilosopher
+    public abstract class Philosopher : IPhilosopher
     {
-        public Philosopher(RunnerInstance runnerInstance)
+        public Philosopher(int id, RunnerInstance runnerInstance)
         {
+            Id = id;
             RunnerInstance = runnerInstance;
         }
         public int Id { get; set; }
@@ -29,7 +30,7 @@ namespace DiningPhilosophers
             RunnerInstance.Eat(Id, ct);
             Eat();
         }
-        public void Run(CancellationToken ct)
+        public void Run(CancellationToken ct = default)
         {
             while (!ct.IsCancellationRequested)
             {

@@ -1,5 +1,4 @@
-﻿
-namespace DiningPhilosophers
+﻿namespace DiningPhilosophers.Philosophers
 {
     public interface IPhilosopher
     {
