@@ -1,6 +1,4 @@
-﻿
-
-namespace DiningPhilosophers
+﻿namespace DiningPhilosophers.Old
 {
     internal static class Utills
     {

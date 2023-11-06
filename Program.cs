@@ -1,9 +1,10 @@
 ﻿using DiningPhilosophers;
-using DiningPhilosophers.ChandyMisra;
+using DiningPhilosophers.Old;
 
 //RunDjiskra();
 //RunChandyMisra();
-RunAll();
+RunAllX();
+//RunChandyMisraOld();
 
 
 void RunDjiskra()
@@ -20,6 +21,14 @@ void RunChandyMisra()
     var solutionFactory = new SolutionFactory();
     var djiskra = solutionFactory.CreateChandyMisraSolution(true, 5);
     djiskra.Run().Wait();
+}
+
+void RunChandyMisraOld()
+{
+    Console.WriteLine("Starting ChandyMisra");
+    var solutionFactory = new SolutionFactory();
+    var chandy = new ChandyMisra(5);
+    chandy.RunTaskWithOptionalCancelationToken().Wait();
 }
 
 

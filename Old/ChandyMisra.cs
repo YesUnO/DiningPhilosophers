@@ -1,9 +1,9 @@
-﻿namespace DiningPhilosophers.ChandyMisra
+﻿namespace DiningPhilosophers.Old
 {
     internal class ChandyMisra
     {
         Fork[] Forks;
-        internal PhilosopherCh[] Philosophers { get; }
+        internal Philosopher[] Philosophers { get; }
         internal int[] EatCount { get; set; } = null;
         internal ChandyMisra(int count)
         {
@@ -11,18 +11,18 @@
             Utills.SetIsSingleRun(true);
             Forks = new Fork[count];
             EatCount = new int[count];
-            Philosophers = new PhilosopherCh[count];
+            Philosophers = new Philosopher[count];
             for (int i = 0; i < count; i++)
             {
-                //var fork = new Fork(i);
-                var philosopher = new PhilosopherCh(i, this);
+                var fork = new Fork(i);
+                var philosopher = new Philosopher(i, this);
 
-                //fork.Owner = philosopher;
+                fork.Owner = philosopher;
 
-                //philosopher.LeftFork = fork;
+                philosopher.LeftFork = fork;
 
                 Philosophers[i] = philosopher;
-                //Forks[i] = fork;
+                Forks[i] = fork;
             }
 
             foreach (var philosopher in Philosophers)
@@ -37,19 +37,19 @@
         internal ChandyMisra()
         {
             Forks = new Fork[Utills.Count];
-            Philosophers = new PhilosopherCh[Utills.Count];
+            Philosophers = new Philosopher[Utills.Count];
             EatCount = new int[Utills.Count];
             for (int i = 0; i < Utills.Count; i++)
             {
-                //var fork = new Fork(i);
-                var philosopher = new PhilosopherCh(i, this);
+                var fork = new Fork(i);
+                var philosopher = new Philosopher(i, this);
 
-                //fork.Owner = philosopher;
+                fork.Owner = philosopher;
 
-                //philosopher.LeftFork = fork;
+                philosopher.LeftFork = fork;
 
                 Philosophers[i] = philosopher;
-                //Forks[i] = fork;
+                Forks[i] = fork;
             }
 
             foreach (var philosopher in Philosophers)
