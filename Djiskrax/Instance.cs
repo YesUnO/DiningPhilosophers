@@ -8,9 +8,8 @@ namespace DiningPhilosophers.Djiskrax
         internal SemaphoreSlim[] BothForksAvailable;
         private readonly object _lock = new object();
 
-        public override void Initialize(IPhilosopher[] philosophers)
+        public override void Initialize()
         {
-            base.Initialize(philosophers);
             BothForksAvailable = Enumerable.Range(0, Count)
                 .Select(_ => new SemaphoreSlim(0))
                 .ToArray();

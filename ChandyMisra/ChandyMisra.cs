@@ -14,15 +14,15 @@
             Philosophers = new PhilosopherCh[count];
             for (int i = 0; i < count; i++)
             {
-                var fork = new Fork(i);
+                //var fork = new Fork(i);
                 var philosopher = new PhilosopherCh(i, this);
 
-                fork.Owner = philosopher;
+                //fork.Owner = philosopher;
 
-                philosopher.LeftFork = fork;
+                //philosopher.LeftFork = fork;
 
                 Philosophers[i] = philosopher;
-                Forks[i] = fork;
+                //Forks[i] = fork;
             }
 
             foreach (var philosopher in Philosophers)
@@ -41,15 +41,15 @@
             EatCount = new int[Utills.Count];
             for (int i = 0; i < Utills.Count; i++)
             {
-                var fork = new Fork(i);
+                //var fork = new Fork(i);
                 var philosopher = new PhilosopherCh(i, this);
 
-                fork.Owner = philosopher;
+                //fork.Owner = philosopher;
 
-                philosopher.LeftFork = fork;
+                //philosopher.LeftFork = fork;
 
                 Philosophers[i] = philosopher;
-                Forks[i] = fork;
+                //Forks[i] = fork;
             }
 
             foreach (var philosopher in Philosophers)

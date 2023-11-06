@@ -2,10 +2,10 @@
 
 namespace DiningPhilosophers.SolutionInstance
 {
-    public class RunnerInstance : IRunnerInstance
+    public abstract class RunnerInstance : IRunnerInstance
     {
         public IPhilosopher[] Philosophers { get; set; } = new IPhilosopher[0];
-        int[] EatCounter { get; set; } = new int[0];
+        public int[] EatCounter { get; set; } = new int[0];
         private Random Random = new();
         public int Count { get { return Philosophers.Length; } }
         internal bool IsSingleRun { get; private set; } = false;
@@ -14,10 +14,13 @@ namespace DiningPhilosophers.SolutionInstance
         private int _low = 10;
         private int _high = 15;
 
-        public virtual void Initialize(IPhilosopher[] philosophers)
+        public abstract void Initialize();
+
+        public void Initialize(IPhilosopher[] philosophers)
         {
             Philosophers = philosophers;
             EatCounter = new int[Count];
+            Initialize();
         }
 
         internal void Think(int philospher, CancellationToken ct = default)

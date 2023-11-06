@@ -73,7 +73,7 @@ namespace DiningPhilosophers.ChandyMisra
 
         private void SendFork(Fork fork, PhilosopherCh reciever)
         {
-            fork.Owner = reciever;
+            //fork.Owner = reciever;
             fork.IsClean = true;
             Monitor.PulseAll(fork);
         }
