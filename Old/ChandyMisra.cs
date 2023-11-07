@@ -8,7 +8,7 @@
         internal ChandyMisra(int count)
         {
             Utills.SetCount(count);
-            Utills.SetIsSingleRun(true);
+            //Utills.SetIsSingleRun(true);
             Forks = new Fork[count];
             EatCount = new int[count];
             Philosophers = new Philosopher[count];

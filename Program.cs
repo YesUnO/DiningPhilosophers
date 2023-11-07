@@ -4,6 +4,7 @@ using DiningPhilosophers.Old;
 //RunDjiskra();
 //RunChandyMisra();
 RunAllX();
+//RunAll();
 //RunChandyMisraOld();
 
 
@@ -26,7 +27,6 @@ void RunChandyMisra()
 void RunChandyMisraOld()
 {
     Console.WriteLine("Starting ChandyMisra");
-    var solutionFactory = new SolutionFactory();
     var chandy = new ChandyMisra(5);
     chandy.RunTaskWithOptionalCancelationToken().Wait();
 }
@@ -43,17 +43,22 @@ void RunAll()
 void RunAllX()
 {
     Console.WriteLine("Starting both");
-    int runTimeInSeconds = 5;
+    int runTimeInSeconds = 10;
 
     CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
     CancellationToken ct = cancellationTokenSource.Token;
 
+    var solutionFactory = new SolutionFactory();
 
-    var djiskra = new Djiskra();
-    var chandyMisra = new ChandyMisra();
 
-    var chandyMisraTask = chandyMisra.RunTaskWithOptionalCancelationToken(ct);
-    var djiskraTask = djiskra.RunTaskWithOptionalCancelationToken(ct);
+    var djiskra = solutionFactory.CreateDjiskraSolution(false, 50);
+    var chandyMisra = new ChandyMisra(5);
+
+    var newChandy = solutionFactory.CreateChandyMisraSolution(false, 5);
+    //var newChandyTask = newChandy.Run(ct);
+
+    //var chandyMisraTask = chandyMisra.RunTaskWithOptionalCancelationToken(ct);
+    var djiskraTask = djiskra.Run(ct);
     var elapsedTask = DisplayElapsed(ct);
 
     Task.Delay(runTimeInSeconds * 1000).ContinueWith(_ =>
@@ -61,21 +66,35 @@ void RunAllX()
         cancellationTokenSource.Cancel();
     });
 
-    var tasks = new Task[] { chandyMisraTask, djiskraTask, elapsedTask };
+    var tasks = new Task[] {
+        //chandyMisraTask,
+        djiskraTask,
+        //newChandyTask,
+        elapsedTask 
+    };
 
     Task.WaitAll(tasks);
 
     var djiskraCount = 0;
     var chandyMisraCount = 0;
+    var newCount = 0;
 
-    for (int i = 0; i < chandyMisra.EatCount.Length; i++)
+    for (int i = 0; i < djiskra.EatCounter.Length; i++)
     {
-        djiskraCount += djiskra.EatCount[i];
-        chandyMisraCount += chandyMisra.EatCount[i];
+        djiskraCount += djiskra.EatCounter[i];
+        //chandyMisraCount += chandyMisra.EatCount[i];
+        //newCount += newChandy.EatCounter[i];
 
-        Console.WriteLine($"{i} __ Djiskra: {djiskra.EatCount[i]}; ChandyMisra: {chandyMisra.EatCount[i]} ");
+        Console.WriteLine($"{i} __ " +
+            $"Djiskra: {djiskra.EatCounter[i]}; " +
+            //$"ChandyMisra: {chandyMisra.EatCount[i]} " +
+            //$"New: {newChandy.EatCounter[i]} " +
+            $"");
     }
-    Console.WriteLine($"total: Djiskra: {djiskraCount}; ChandyMisra: {chandyMisraCount} ");
+    Console.WriteLine($"total: " +
+        $"New: {newCount}; " +
+        $"Djiskra: {djiskraCount}; " +
+        $"ChandyMisra: {chandyMisraCount} ");
 
 }
 

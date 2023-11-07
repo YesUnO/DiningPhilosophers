@@ -12,10 +12,10 @@ namespace DiningPhilosophers.Philosophers
         public int Id { get; set; }
         public PhilosopherState State { get; set; }
         protected RunnerInstance RunnerInstance;
-        internal abstract void GetForks();
-        void GetForksWrapper()
+        internal abstract void GetForks(CancellationToken ct = default);
+        void GetForksWrapper(CancellationToken ct = default)
         {
-            GetForks();
+            GetForks(ct);
             RunnerInstance.LogGetForks(Id);
         }
         internal abstract void PutForks();
@@ -35,7 +35,7 @@ namespace DiningPhilosophers.Philosophers
             while (!ct.IsCancellationRequested)
             {
                 RunnerInstance.Think(Id, ct);
-                GetForksWrapper();
+                GetForksWrapper(ct);
                 EatWrapper(ct);
                 PutForksWrapper();
             }

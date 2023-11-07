@@ -16,19 +16,19 @@
         internal Philosopher RightPhilosopher { get; set; }
         private ChandyMisra RunInstance;
 
-        private void GetForks()
+        private void GetForks(CancellationToken ct)
         {
             State = PhilosopherState.Hungry;
 
             Utills.LogGetForks(Id);
 
-            WaitForFork(LeftFork);
-            WaitForFork(RightFork);
+            WaitForFork(LeftFork, ct);
+            WaitForFork(RightFork, ct);
 
             State = PhilosopherState.Eating;
         }
 
-        private void WaitForFork(Fork fork)
+        private void WaitForFork(Fork fork, CancellationToken ct)
         {
             if (fork.Owner != this)
             {
@@ -81,7 +81,7 @@
             while (!ct.IsCancellationRequested)
             {
                 Utills.Think(Id, ct);
-                GetForks();
+                GetForks(ct);
                 Utills.Eat(Id, ct);
                 RightFork.IsClean = LeftFork.IsClean = false;
                 PutForks();

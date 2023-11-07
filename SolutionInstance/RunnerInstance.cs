@@ -11,8 +11,8 @@ namespace DiningPhilosophers.SolutionInstance
         internal bool IsSingleRun { get; private set; } = false;
         private readonly object _lock = new();
         //private readonly object _counterLock = new(); maybe?
-        private int _low = 10;
-        private int _high = 15;
+        private int _low = 1;
+        private int _high = 2;
 
         public abstract void Initialize();
 

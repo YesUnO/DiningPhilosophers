@@ -22,7 +22,7 @@ namespace DiningPhilosophers.ChandyMisra
             RightFork.IsClean = LeftFork.IsClean = false;
         }
 
-        internal override void GetForks()
+        internal override void GetForks(CancellationToken ct = default)
         {
             State = PhilosopherState.Hungry;
 
@@ -43,13 +43,13 @@ namespace DiningPhilosophers.ChandyMisra
             State = PhilosopherState.Thinking;
         }
 
-        private void WaitForFork(Fork fork)
+        private void WaitForFork(Fork fork, CancellationToken ct = default)
         {
             if (fork.Owner != this)
             {
                 lock (fork)
                 {
-                    while (fork.Owner != this)
+                    while (fork.Owner != this && !ct.IsCancellationRequested)
                     {
                         GiveUpForksIfNeeded();
                         Monitor.Wait(fork);

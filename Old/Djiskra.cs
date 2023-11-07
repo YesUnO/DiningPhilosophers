@@ -10,7 +10,7 @@
         {
             EatCount = new int[philosophersCount];
             Utills.SetCount(philosophersCount);
-            Utills.SetIsSingleRun(true);
+            //Utills.SetIsSingleRun(true);
             PhilosphersStates = new PhilosopherState[philosophersCount];
             BothForksAvailable = Enumerable.Range(0, philosophersCount)
                 .Select(_ => new SemaphoreSlim(0))

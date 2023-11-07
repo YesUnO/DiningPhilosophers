@@ -1,5 +1,5 @@
 ﻿using DiningPhilosophers.ChandyMisra;
-using DiningPhilosophers.Djiskrax;
+using DiningPhilosophers.Djiskra;
 using DiningPhilosophers.SolutionInstance;
 
 namespace DiningPhilosophers

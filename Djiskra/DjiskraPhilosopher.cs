@@ -1,6 +1,6 @@
 ﻿using DiningPhilosophers.Philosophers;
 
-namespace DiningPhilosophers.Djiskrax
+namespace DiningPhilosophers.Djiskra
 {
     internal class DjiskraPhilosopher : Philosopher
     {
@@ -14,7 +14,7 @@ namespace DiningPhilosophers.Djiskrax
         {
         }
 
-        internal override void GetForks()
+        internal override void GetForks(CancellationToken ct = default)
         {
             _instance.TakeForks(Id);
         }

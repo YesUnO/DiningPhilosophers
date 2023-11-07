@@ -1,7 +1,7 @@
 ﻿using DiningPhilosophers.Philosophers;
 using DiningPhilosophers.SolutionInstance;
 
-namespace DiningPhilosophers.Djiskrax
+namespace DiningPhilosophers.Djiskra
 {
     internal class Instance : RunnerInstance
     {
